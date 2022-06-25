@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:news/models/articles.dart';
 import 'package:news/models/news.dart';
 import 'package:news/repositories/news_repository.dart';
@@ -10,7 +12,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   HomeCubit({required repository})
       : _repository = repository,
-        super(const HomeState(
+        super(HomeState(
           status: HomeStatus.initial,
           errorMessage: '',
           flag: true,
@@ -20,12 +22,14 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       emit(state.copyWith(status: HomeStatus.loading));
 
-      final response = await _repository.fetch();
+      final response = await _repository.fetch(
+          date: DateFormat("yyyy-MM-dd").format(state.date!));
 
       emit(state.copyWith(status: HomeStatus.loaded, news: response));
     } catch (error) {
       emit(state.copyWith(
           status: HomeStatus.errorServer, errorMessage: error.toString()));
+      emit(state.copyWith(status: HomeStatus.loaded));
     }
   }
 
@@ -77,5 +81,18 @@ class HomeCubit extends Cubit<HomeState> {
     });
 
     emit(state.copyWith(articles: result));
+  }
+
+  Future initDate({required BuildContext context}) async {
+    DateTime? newDate = await showDatePicker(
+      context: context,
+      initialDate: state.date!,
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+    );
+    if (newDate!.day != state.date!.day) {
+      emit(state.copyWith(date: newDate));
+      getNews();
+    }
   }
 }

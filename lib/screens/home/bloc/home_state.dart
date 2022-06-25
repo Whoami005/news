@@ -12,20 +12,25 @@ class HomeState {
   final HomeStatus _status;
   final News? _news;
   final List<Articles>? _articles;
+  final DateTime? _date;
   final bool _flag;
   final String _errorMessage;
 
-  const HomeState({
+  HomeState({
     required HomeStatus status,
     News? news,
     List<Articles>? articles,
     bool flag = true,
+    DateTime? date,
     required String errorMessage,
   })  : _status = status,
         _news = news,
         _flag = flag,
+        _date = date ?? DateTime.now(),
         _articles = articles,
         _errorMessage = errorMessage;
+
+  DateTime? get date => _date;
 
   bool get flag => _flag;
 
@@ -41,6 +46,7 @@ class HomeState {
     HomeStatus? status,
     News? news,
     List<Articles>? articles,
+    DateTime? date,
     bool? flag,
     String? errorMessage,
   }) {
@@ -48,6 +54,7 @@ class HomeState {
       status: status ?? _status,
       news: news ?? _news,
       articles: articles ?? _articles,
+      date: date ?? _date,
       flag: flag ?? _flag,
       errorMessage: errorMessage ?? _errorMessage,
     );

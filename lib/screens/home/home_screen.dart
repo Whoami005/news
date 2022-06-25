@@ -80,6 +80,10 @@ class HomeScreen extends StatelessWidget {
                             Row(
                               children: [
                                 OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    backgroundColor: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                  ),
                                   onPressed: () {
                                     if (state.flag == true) {
                                       context.read<HomeCubit>().sortedOld();
@@ -88,6 +92,19 @@ class HomeScreen extends StatelessWidget {
                                     }
                                   },
                                   child: const Text("сортировка"),
+                                ),
+                                const SizedBox(width: 10),
+                                OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    backgroundColor: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                  ),
+                                  onPressed: () async {
+                                    context
+                                        .read<HomeCubit>()
+                                        .initDate(context: context);
+                                  },
+                                  child: const Text("запрос по дате"),
                                 ),
                               ],
                             ),
