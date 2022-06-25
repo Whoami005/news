@@ -1,16 +1,17 @@
-# news
+# News
 
-A new Flutter project.
+This app shows the news about ios
 
-## Getting Started
+## This project used:
+ - http
+ - flutter_bloc
+ - provider
+ - auto_size_text
+ - intl
+ - webview_flutter
+ - flutter_native_splash
+ 
+Application video:
 
-This project is a starting point for a Flutter application.
+https://user-images.githubusercontent.com/46159852/175781922-2559c434-450a-464d-9806-403f307d5d37.mp4
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
