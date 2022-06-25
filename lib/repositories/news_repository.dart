@@ -6,10 +6,10 @@ import 'package:news/models/news.dart';
 class NewsRepository {
   final String _apiKey = "7d599c4bc96047a1b10fce80c93dd502";
 
-  Future fetch() async {
+  Future fetch({String date = "2022-05-24"}) async {
     Uri url = Uri.parse(
       "https://newsapi.org/v2/everything?"
-      "q=ios&from=2022-05-24&language=ru&sortBy=publishedAt&apiKey=$_apiKey",
+      "q=ios&from=$date&language=ru&sortBy=publishedAt&apiKey=$_apiKey",
     );
 
     final response = await http.get(url);

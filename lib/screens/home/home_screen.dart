@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
                   child: Stack(
                     children: [
                       ListView.separated(
-                        padding: const EdgeInsets.only(top: 80),
+                        padding: const EdgeInsets.only(top: 120),
                         physics: const BouncingScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
                           return Column(
@@ -63,17 +63,35 @@ class HomeScreen extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                              labelText: "Поиск",
-                              border: const OutlineInputBorder(),
-                              filled: true,
-                              fillColor:
-                              Theme
-                                  .of(context)
-                                  .scaffoldBackgroundColor),
-                          onChanged: (value) =>
-                              context.read<HomeCubit>().search(value),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            TextField(
+                              decoration: InputDecoration(
+                                labelText: "Поиск",
+                                border: const OutlineInputBorder(),
+                                filled: true,
+                                fillColor:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                              ),
+                              onChanged: (value) =>
+                                  context.read<HomeCubit>().search(value),
+                            ),
+                            Row(
+                              children: [
+                                OutlinedButton(
+                                  onPressed: () {
+                                    if (state.flag == true) {
+                                      context.read<HomeCubit>().sortedOld();
+                                    } else {
+                                      context.read<HomeCubit>().sortedNew();
+                                    }
+                                  },
+                                  child: const Text("сортировка"),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       )
                     ],

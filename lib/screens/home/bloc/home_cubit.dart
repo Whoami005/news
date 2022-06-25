@@ -13,6 +13,7 @@ class HomeCubit extends Cubit<HomeState> {
         super(const HomeState(
           status: HomeStatus.initial,
           errorMessage: '',
+          flag: true,
         ));
 
   Future getNews() async {
@@ -29,12 +30,53 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void search(String news) {
-    final comparison = state._news!.articles!.where((element) {
+    final comparison = state.news!.articles!.where((element) {
       final title = element.title!.toLowerCase();
       final input = news.toLowerCase();
 
       return title.contains(input);
     }).toList();
-    emit(state.copyWith(status: HomeStatus.search, articles: comparison));
+
+    if (state.flag == true) {
+      comparison.sort((a, b) {
+        return b.publishedAt!.compareTo(a.publishedAt!);
+      });
+    } else {
+      comparison.sort((a, b) {
+        return a.publishedAt!.compareTo(b.publishedAt!);
+      });
+    }
+
+    emit(state.copyWith(
+      status: HomeStatus.search,
+      articles: comparison,
+      sortedArticles: comparison,
+    ));
+  }
+
+  void sortedOld() {
+    emit(state.copyWith(flag: false));
+    final result = state.status == HomeStatus.loaded
+        ? state.news!.articles!
+        : state.sortedArticles!;
+
+    result.sort((a, b) {
+      return a.publishedAt!.compareTo(b.publishedAt!);
+    });
+
+    emit(state.copyWith(articles: result));
+  }
+
+  void sortedNew() {
+    emit(state.copyWith(flag: true));
+    final result = state.status == HomeStatus.loaded
+        ? state.news!.articles!
+        : state.sortedArticles!;
+
+    result.sort((a, b) {
+      return b.publishedAt!.compareTo(a.publishedAt!);
+    });
+
+    emit(state.copyWith(articles: result));
   }
 }
