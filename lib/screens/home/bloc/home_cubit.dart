@@ -50,7 +50,6 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(
       status: HomeStatus.search,
       articles: comparison,
-      sortedArticles: comparison,
     ));
   }
 
@@ -58,7 +57,7 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(flag: false));
     final result = state.status == HomeStatus.loaded
         ? state.news!.articles!
-        : state.sortedArticles!;
+        : state.articles!;
 
     result.sort((a, b) {
       return a.publishedAt!.compareTo(b.publishedAt!);
@@ -71,7 +70,7 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(flag: true));
     final result = state.status == HomeStatus.loaded
         ? state.news!.articles!
-        : state.sortedArticles!;
+        : state.articles!;
 
     result.sort((a, b) {
       return b.publishedAt!.compareTo(a.publishedAt!);

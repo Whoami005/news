@@ -58,7 +58,7 @@ class HomeScreen extends StatelessWidget {
                           return const SizedBox(height: 5);
                         },
                         itemCount: state.status == HomeStatus.loaded
-                            ? 100
+                            ? state.news!.articles!.length
                             : state.articles!.length,
                       ),
                       Padding(

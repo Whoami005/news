@@ -12,7 +12,6 @@ class HomeState {
   final HomeStatus _status;
   final News? _news;
   final List<Articles>? _articles;
-  final List<Articles>? _sortedArticles;
   final bool _flag;
   final String _errorMessage;
 
@@ -20,17 +19,13 @@ class HomeState {
     required HomeStatus status,
     News? news,
     List<Articles>? articles,
-    List<Articles>? sortedArticles,
     bool flag = true,
     required String errorMessage,
   })  : _status = status,
         _news = news,
         _flag = flag,
         _articles = articles,
-        _sortedArticles = sortedArticles,
         _errorMessage = errorMessage;
-
-  List<Articles>? get sortedArticles => _sortedArticles;
 
   bool get flag => _flag;
 
@@ -46,7 +41,6 @@ class HomeState {
     HomeStatus? status,
     News? news,
     List<Articles>? articles,
-    List<Articles>? sortedArticles,
     bool? flag,
     String? errorMessage,
   }) {
@@ -54,7 +48,6 @@ class HomeState {
       status: status ?? _status,
       news: news ?? _news,
       articles: articles ?? _articles,
-      sortedArticles: sortedArticles ?? _sortedArticles,
       flag: flag ?? _flag,
       errorMessage: errorMessage ?? _errorMessage,
     );
