@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news/models/articles.dart';
 import 'package:news/models/news.dart';
 import 'package:news/repositories/news_repository.dart';
 
@@ -25,5 +26,15 @@ class HomeCubit extends Cubit<HomeState> {
       emit(state.copyWith(
           status: HomeStatus.errorServer, errorMessage: error.toString()));
     }
+  }
+
+  void search(String news) {
+    final comparison = state._news!.articles!.where((element) {
+      final title = element.title!.toLowerCase();
+      final input = news.toLowerCase();
+
+      return title.contains(input);
+    }).toList();
+    emit(state.copyWith(status: HomeStatus.search, articles: comparison));
   }
 }

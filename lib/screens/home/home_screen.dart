@@ -24,7 +24,8 @@ class HomeScreen extends StatelessWidget {
           if (state.status == HomeStatus.initial) {
             context.read<HomeCubit>().getNews();
           }
-          if (state.status == HomeStatus.loaded) {
+          if (state.status == HomeStatus.loaded ||
+              state.status == HomeStatus.search) {
             return Scaffold(
               appBar: HomeAppBar(news: state.news),
               body: SafeArea(
@@ -32,26 +33,50 @@ class HomeScreen extends StatelessWidget {
                   onRefresh: () async {
                     context.read<HomeCubit>().getNews();
                   },
-                  child: ListView.separated(
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (BuildContext context, int index) {
-                      return Column(
-                        children: [
-                          Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            elevation: 10,
-                            child: NewsItem(
-                              articles: state.news!.articles![index],
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return const SizedBox(height: 5);
-                    },
-                    itemCount: state.news!.totalResults!,
+                  child: Stack(
+                    children: [
+                      ListView.separated(
+                        padding: const EdgeInsets.only(top: 80),
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (BuildContext context, int index) {
+                          return Column(
+                            children: [
+                              Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                elevation: 10,
+                                child: NewsItem(
+                                  articles: state.status == HomeStatus.loaded
+                                      ? state.news!.articles![index]
+                                      : state.articles![index],
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const SizedBox(height: 5);
+                        },
+                        itemCount: state.status == HomeStatus.loaded
+                            ? 100
+                            : state.articles!.length,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: TextField(
+                          decoration: InputDecoration(
+                              labelText: "Поиск",
+                              border: const OutlineInputBorder(),
+                              filled: true,
+                              fillColor:
+                              Theme
+                                  .of(context)
+                                  .scaffoldBackgroundColor),
+                          onChanged: (value) =>
+                              context.read<HomeCubit>().search(value),
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),

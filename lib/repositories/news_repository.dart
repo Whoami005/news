@@ -9,7 +9,7 @@ class NewsRepository {
   Future fetch() async {
     Uri url = Uri.parse(
       "https://newsapi.org/v2/everything?"
-      "q=ios&from=2022-05-24&sortBy=publishedAt&apiKey=$_apiKey",
+      "q=ios&from=2022-05-24&language=ru&sortBy=publishedAt&apiKey=$_apiKey",
     );
 
     final response = await http.get(url);
