@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:news/models/articles.dart';
 import 'package:news/screens/news/bloc/news_cubit.dart';
 import 'package:news/screens/news/widgets/app_bar.dart';
-import 'package:news/theme/text_style.dart';
+import 'package:news/screens/news/widgets/news_card.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsScreen extends StatelessWidget {
@@ -34,51 +35,13 @@ class NewsScreen extends StatelessWidget {
                       SizedBox(
                         height: 250,
                         width: double.infinity,
-                        child: Image.network(_articles.urlToImage!),
-                      ),
-                    Card(
-                      elevation: 10,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              _articles.title!,
-                              style: NewsTextStyle.title25bold(),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              "${_articles.publishedAt!.toLocal()}",
-                              style: NewsTextStyle.title16bold(),
-                            ),
-                            const SizedBox(height: 20),
-                            Text(
-                              _articles.description!,
-                              style: NewsTextStyle.title18(),
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              _articles.content!,
-                              style: NewsTextStyle.title18(),
-                            ),
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  context.read<NewsCubit>().inWeb();
-                                },
-                                child: const Text("Перейти к статье"),
-                              ),
-                            )
-                          ],
+                        child: Image.network(
+                          _articles.urlToImage!,
+                          errorBuilder: (context, error, stackTrace) =>
+                              SvgPicture.network(_articles.urlToImage!),
                         ),
                       ),
-                    ),
+                    NewsCard(articles: _articles),
                   ],
                 ),
               ),
@@ -93,7 +56,6 @@ class NewsScreen extends StatelessWidget {
                 ),
               ),
               floatingActionButton: FloatingActionButton(
-                // backgroundColor: Colors.grey,
                 onPressed: () {
                   context.read<NewsCubit>().exitWeb();
                 },

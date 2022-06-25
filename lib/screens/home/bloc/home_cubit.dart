@@ -37,7 +37,6 @@ class HomeCubit extends Cubit<HomeState> {
     final comparison = state.news!.articles!.where((element) {
       final title = element.title!.toLowerCase();
       final input = news.toLowerCase();
-
       return title.contains(input);
     }).toList();
 
